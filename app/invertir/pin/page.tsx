@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 import { PinAuth } from "@/components/features/pin-auth";
+import { LoadingScreen } from "@/components/ui/spinner";
 
 export default function PinPage() {
   return (
-    <Suspense fallback={<div className="p-4">Cargando...</div>}>
+    <Suspense fallback={<LoadingScreen />}>
       <PinAuth />
     </Suspense>
   );

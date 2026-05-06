@@ -45,7 +45,7 @@ export function ChatInterface() {
           </div>
           
           <div>
-            <h1 className="text-h3-bold text-white">Asistente IA</h1>
+            <h1 className="text-h3-bold text-white">AIKO</h1>
             <p className="text-b3-regular text-white/80">
               Siempre disponible
             </p>
