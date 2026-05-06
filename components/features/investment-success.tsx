@@ -5,7 +5,7 @@ import { mockProducts } from "@/lib/mock-data";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BottomBar } from "@/components/ui/bottom-bar";
-import { formatCurrency, generateOperationNumber } from "@/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
 
@@ -16,7 +16,6 @@ export function InvestmentSuccess() {
   const amount = parseFloat(searchParams.get("amount") || "0");
 
   const product = mockProducts.find((p) => p.id === productId);
-  const operationNumber = generateOperationNumber();
 
   if (!product) {
     return (
@@ -49,15 +48,6 @@ export function InvestmentSuccess() {
         {/* Operation details */}
         <Card className="w-full p-4">
           <div className="flex flex-col gap-3">
-            <div className="flex justify-between">
-              <span className="text-b1-regular text-text-muted">
-                N° de operación
-              </span>
-              <span className="text-b1-bold text-text-primary font-mono">
-                {operationNumber}
-              </span>
-            </div>
-
             <div className="flex justify-between">
               <span className="text-b1-regular text-text-muted">Producto</span>
               <span className="text-b1-bold text-text-primary">
