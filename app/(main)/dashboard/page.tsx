@@ -13,7 +13,7 @@ export default function DashboardPage() {
     <div className="flex flex-col">
       <DashboardHeader user={mockUser} />
       
-      <div className="px-4 -mt-6 flex flex-col gap-4">
+      <div className="px-4 -mt-6 pb-8 flex flex-col gap-4">
         <PortfolioCard
           totalPortfolio={mockUser.totalPortfolio}
           availableBalance={mockUser.availableBalance}
