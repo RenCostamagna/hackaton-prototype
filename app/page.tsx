@@ -20,32 +20,38 @@ const quickActions = [
   {
     icon: PiggyBank,
     label: "Abrir tu caja de ahorro",
-    href: "/login",
+    href: "#",
+    disabled: true,
   },
   {
     icon: CreditCard,
     label: "Solicitar tarjeta de credito",
-    href: "/login",
+    href: "#",
+    disabled: true,
   },
   {
     icon: TrendingUp,
     label: "Invertir",
     href: "/login",
+    disabled: false,
   },
   {
     icon: UserCog,
     label: "Actualizar tus datos",
-    href: "/login",
+    href: "#",
+    disabled: true,
   },
   {
     icon: Wallet,
     label: "Gestiones de tarjeta de debito",
-    href: "/login",
+    href: "#",
+    disabled: true,
   },
   {
     icon: Building2,
     label: "Ingresar a Munibanking",
-    href: "/login",
+    href: "#",
+    disabled: true,
   },
 ];
 
@@ -92,20 +98,34 @@ export default function Home() {
       {/* Quick Actions Grid */}
       <div className="px-4 -mt-0 pt-6">
         <div className="grid grid-cols-3 gap-3">
-          {quickActions.map((action, index) => (
-            <Link
-              key={index}
-              href={action.href}
-              className="bg-surface rounded-xl p-4 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow border border-border"
-            >
-              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                <action.icon className="w-5 h-5 text-primary" />
+          {quickActions.map((action, index) => 
+            action.disabled ? (
+              <div
+                key={index}
+                className="bg-surface rounded-xl p-4 flex flex-col items-center text-center shadow-sm border border-border opacity-50 cursor-not-allowed"
+              >
+                <div className="w-10 h-10 rounded-full bg-grey-2 flex items-center justify-center mb-2">
+                  <action.icon className="w-5 h-5 text-text-muted" />
+                </div>
+                <span className="text-b3-regular text-text-muted leading-tight">
+                  {action.label}
+                </span>
               </div>
-              <span className="text-b3-regular text-text-primary leading-tight">
-                {action.label}
-              </span>
-            </Link>
-          ))}
+            ) : (
+              <Link
+                key={index}
+                href={action.href}
+                className="bg-surface rounded-xl p-4 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow border border-border active:scale-95"
+              >
+                <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mb-2">
+                  <action.icon className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-b3-regular text-text-primary leading-tight">
+                  {action.label}
+                </span>
+              </Link>
+            )
+          )}
         </div>
       </div>
 
