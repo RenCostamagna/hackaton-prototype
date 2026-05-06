@@ -1,0 +1,283 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   BMR — App mobile · Design Tokens
+   Source: Figma · BMR - App mobile
+     · Color   (node 1965-36601)
+     · Typography (node 1966-40046)
+   ========================================================================== */
+
+/* -------------------- GRADIENTS (Degrades) --------------------
+   Tailwind no auto-genera utilities desde `--gradient-*`,
+   por eso van en :root como CSS vars puras y se exponen como
+   utilities manuales más abajo (.bg-gradient-red, etc.). */
+:root {
+  --gradient-red: linear-gradient(180deg, #e40a18 0%, #f01f4b 100%);
+  --gradient-red-dark: linear-gradient(180deg, #e21224 0%, #db777d 100%);
+  --gradient-green: linear-gradient(180deg, #9ae2b4 0%, #1fbc92 100%);
+}
+
+@theme {
+  /* -------------------- PRIMARY -------------------- */
+  --color-primary: #e21224;
+
+  /* -------------------- SECONDARY (Greys) -------------------- */
+  --color-white: #ffffff;
+  --color-grey-1: #fafafa;
+  --color-grey-2: #e7e7e7;
+  --color-grey-3: #cecece;
+  --color-grey-4: #979797;
+  --color-grey-5: #7c8087;
+  --color-grey-6: #3d3d3d;
+  --color-black: #000000;
+
+  /* -------------------- TERTIARY · Greens -------------------- */
+  --color-green-ultra-light: #e7f6ed;
+  --color-green-light: #9ae2b4;
+  --color-green: #1fbc92;
+
+  /* -------------------- TERTIARY · Reds / Magentas -------------------- */
+  --color-red-ultra-light: #ffe9ea;
+  --color-red-light: #ff8b93;
+  --color-red: #e21224;
+  --color-magenta-ultra-light: #fcf1f2;
+  --color-magenta: #fc327b;
+  --color-magenta-2: #de2b6b;
+  --color-maroon: #db777d;
+
+  /* -------------------- SHADOWS --------------------
+     `--shadow-*` en @theme genera la utility `shadow-{name}`. */
+  --shadow-sombra-20: 0 4px 20px 0 rgb(0 0 0 / 0.08);
+  --shadow-card: 0 4px 20px 0 rgb(0 0 0 / 0.08);
+
+  /* -------------------- SEMANTIC TOKENS -------------------- */
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+
+  --color-surface: #ffffff;
+  --color-surface-muted: #fafafa;
+  --color-surface-subtle: #e7e7e7;
+
+  --color-border: #e7e7e7;
+  --color-border-muted: #cecece;
+
+  --color-text-primary: #000000;
+  --color-text-secondary: #3d3d3d;
+  --color-text-muted: #7c8087;
+  --color-text-disabled: #979797;
+  --color-text-inverse: #ffffff;
+
+  --color-accent: #e21224;
+  --color-accent-foreground: #ffffff;
+
+  --color-success: #1fbc92;
+  --color-success-light: #9ae2b4;
+  --color-success-bg: #e7f6ed;
+
+  --color-danger: #e21224;
+  --color-danger-light: #ff8b93;
+  --color-danger-bg: #ffe9ea;
+
+  --color-warning: #fc327b;
+  --color-warning-light: #de2b6b;
+  --color-warning-bg: #fcf1f2;
+
+  /* -------------------- TYPOGRAPHY · Family -------------------- */
+  --font-sans: "Lato", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, sans-serif;
+  --font-lato: "Lato", ui-sans-serif, system-ui, sans-serif;
+
+  /* -------------------- TYPOGRAPHY · Font Sizes
+     Naming follows the Figma scale (h1, h2, h3, b1, b2, b3, b4, tertiary).
+     Each size ships with its line-height as the second value.
+     -------------------- */
+  --text-h1: 22px;
+  --text-h1--line-height: 32px;
+
+  --text-h2: 18px;
+  --text-h2--line-height: 32px; /* H2 Bold */
+
+  --text-h2-tight: 18px;
+  --text-h2-tight--line-height: 24px; /* H2 SemiBold / H2 Regular */
+
+  --text-h3: 16px;
+  --text-h3--line-height: 20px; /* H3 Bold / SemiBold */
+
+  --text-h3-loose: 16px;
+  --text-h3-loose--line-height: 26px; /* H3 Medium */
+
+  --text-b1: 14px;
+  --text-b1--line-height: 20px;
+
+  --text-b2: 12px;
+  --text-b2--line-height: 16px;
+
+  --text-b3: 11px;
+  --text-b3--line-height: 16px;
+
+  --text-b4: 10px;
+  --text-b4--line-height: 12px;
+
+  --text-tertiary: 14px;
+  --text-tertiary--line-height: 22px;
+
+  /* -------------------- TYPOGRAPHY · Weights -------------------- */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY UTILITIES · Estilos compuestos del Figma
+   Cada clase = un token tipográfico exacto (family + size + line-height + weight).
+   Uso: <h1 class="text-h1-bold">Título</h1>
+   ========================================================================== */
+
+@layer components {
+  .text-h1-bold {
+    font-family: var(--font-lato);
+    font-size: var(--text-h1);
+    line-height: var(--text-h1--line-height);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .text-h2-bold {
+    font-family: var(--font-lato);
+    font-size: var(--text-h2);
+    line-height: var(--text-h2--line-height);
+    font-weight: var(--font-weight-bold);
+  }
+  .text-h2-semibold {
+    font-family: var(--font-lato);
+    font-size: var(--text-h2-tight);
+    line-height: var(--text-h2-tight--line-height);
+    font-weight: var(--font-weight-semibold);
+  }
+  .text-h2-regular {
+    font-family: var(--font-lato);
+    font-size: var(--text-h2-tight);
+    line-height: var(--text-h2-tight--line-height);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .text-h3-bold {
+    font-family: var(--font-lato);
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    font-weight: var(--font-weight-bold);
+  }
+  .text-h3-semibold {
+    font-family: var(--font-lato);
+    font-size: var(--text-h3);
+    line-height: var(--text-h3--line-height);
+    font-weight: var(--font-weight-semibold);
+  }
+  .text-h3-medium {
+    font-family: var(--font-lato);
+    font-size: var(--text-h3-loose);
+    line-height: var(--text-h3-loose--line-height);
+    font-weight: var(--font-weight-medium);
+  }
+
+  .text-b1-bold {
+    font-family: var(--font-lato);
+    font-size: var(--text-b1);
+    line-height: var(--text-b1--line-height);
+    font-weight: var(--font-weight-bold);
+  }
+  .text-b1-regular {
+    font-family: var(--font-lato);
+    font-size: var(--text-b1);
+    line-height: var(--text-b1--line-height);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .text-b2-bold {
+    font-family: var(--font-lato);
+    font-size: var(--text-b2);
+    line-height: var(--text-b2--line-height);
+    font-weight: var(--font-weight-bold);
+  }
+  .text-b2-semibold {
+    font-family: var(--font-lato);
+    font-size: var(--text-b2);
+    line-height: var(--text-b2--line-height);
+    font-weight: var(--font-weight-semibold);
+  }
+  .text-b2-regular {
+    font-family: var(--font-lato);
+    font-size: var(--text-b2);
+    line-height: var(--text-b2--line-height);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .text-b3-bold {
+    font-family: var(--font-lato);
+    font-size: var(--text-b3);
+    line-height: var(--text-b3--line-height);
+    font-weight: var(--font-weight-bold);
+  }
+
+  .text-b4-medium {
+    font-family: var(--font-lato);
+    font-size: var(--text-b4);
+    line-height: var(--text-b4--line-height);
+    font-weight: var(--font-weight-medium);
+  }
+
+  /* Tertiary line: link inline (regular + underline) */
+  .text-tertiary-line {
+    font-family: var(--font-lato);
+    font-size: var(--text-tertiary);
+    line-height: var(--text-tertiary--line-height);
+    font-weight: var(--font-weight-regular);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+/* ==========================================================================
+   GRADIENT UTILITIES
+   Use as: <div class="bg-gradient-red"> ... </div>
+   ========================================================================== */
+
+@layer utilities {
+  .bg-gradient-red {
+    background-image: var(--gradient-red);
+  }
+  .bg-gradient-red-dark {
+    background-image: var(--gradient-red-dark);
+  }
+  .bg-gradient-green {
+    background-image: var(--gradient-green);
+  }
+
+  .text-gradient-red {
+    background-image: var(--gradient-red);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-green {
+    background-image: var(--gradient-green);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
+@layer base {
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-lato);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
