@@ -5,13 +5,14 @@ import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
+import { CatalogHeader } from "@/components/features/catalog-header";
 import {
   formatPercentage,
   getProductTypeLabel,
   getRiskLabel,
 } from "@/lib/utils";
 import type { Product, ProductType, RiskLevel, Currency } from "@/types";
-import { Filter, ChevronRight, X } from "lucide-react";
+import { ChevronRight, X } from "lucide-react";
 import Link from "next/link";
 
 interface CatalogListProps {
@@ -19,7 +20,7 @@ interface CatalogListProps {
 }
 
 type FilterState = {
-  type: ProductType | null;
+  type: ProductType | "todos";
   risk: RiskLevel | null;
   currency: Currency | null;
 };
@@ -27,104 +28,83 @@ type FilterState = {
 export function CatalogList({ products }: CatalogListProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filters, setFilters] = useState<FilterState>({
-    type: null,
+    type: "todos",
     risk: null,
     currency: null,
   });
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
-      if (filters.type && product.type !== filters.type) return false;
+      if (filters.type !== "todos" && product.type !== filters.type) return false;
       if (filters.risk && product.risk !== filters.risk) return false;
       if (filters.currency && product.currency !== filters.currency) return false;
       return true;
     });
   }, [products, filters]);
 
-  const activeFiltersCount = Object.values(filters).filter(Boolean).length;
+  const activeFiltersCount = 
+    (filters.risk ? 1 : 0) + (filters.currency ? 1 : 0);
 
   const clearFilters = () => {
-    setFilters({ type: null, risk: null, currency: null });
+    setFilters({ type: filters.type, risk: null, currency: null });
   };
 
   return (
-    <div className="px-4 pb-4">
-      {/* Filter button */}
-      <div className="flex items-center gap-2 mb-4">
-        <button
-          onClick={() => setIsFilterOpen(true)}
-          className="flex items-center gap-2 px-3 py-2 rounded-lg border border-border bg-surface text-text-primary text-b2-semibold"
-        >
-          <Filter className="w-4 h-4" />
-          Filtrar
-          {activeFiltersCount > 0 && (
-            <span className="w-5 h-5 rounded-full bg-primary text-text-inverse text-b4-medium flex items-center justify-center">
-              {activeFiltersCount}
-            </span>
-          )}
-        </button>
+    <div className="flex flex-col min-h-screen bg-background">
+      {/* Header with type filters */}
+      <CatalogHeader
+        selectedType={filters.type}
+        onTypeChange={(type) => setFilters((prev) => ({ ...prev, type }))}
+        onOpenFilters={() => setIsFilterOpen(true)}
+      />
 
+      {/* Content */}
+      <div className="flex-1 px-4 py-4">
+        {/* Active filters indicator */}
         {activeFiltersCount > 0 && (
-          <button
-            onClick={clearFilters}
-            className="flex items-center gap-1 px-3 py-2 text-b2-regular text-text-muted"
-          >
-            <X className="w-4 h-4" />
-            Limpiar
-          </button>
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-b2-regular text-text-muted">
+              {activeFiltersCount} filtro{activeFiltersCount > 1 ? "s" : ""} activo{activeFiltersCount > 1 ? "s" : ""}
+            </span>
+            <button
+              onClick={clearFilters}
+              className="flex items-center gap-1 text-b2-semibold text-primary"
+            >
+              <X className="w-4 h-4" />
+              Limpiar
+            </button>
+          </div>
+        )}
+
+        {/* Product list */}
+        {filteredProducts.length === 0 ? (
+          <Card className="p-6 text-center">
+            <p className="text-b1-regular text-text-muted">
+              No hay productos que coincidan con los filtros
+            </p>
+            <button
+              onClick={clearFilters}
+              className="text-b1-bold text-primary mt-2"
+            >
+              Limpiar filtros
+            </button>
+          </Card>
+        ) : (
+          <div className="flex flex-col gap-3">
+            {filteredProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
         )}
       </div>
 
-      {/* Product list */}
-      {filteredProducts.length === 0 ? (
-        <Card className="p-6 text-center">
-          <p className="text-b1-regular text-text-muted">
-            No hay productos que coincidan con los filtros
-          </p>
-          <button
-            onClick={clearFilters}
-            className="text-b1-bold text-primary mt-2"
-          >
-            Limpiar filtros
-          </button>
-        </Card>
-      ) : (
-        <div className="flex flex-col gap-3">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-      )}
-
-      {/* Filter bottom sheet */}
+      {/* Filter bottom sheet for risk and currency */}
       <BottomSheet
         isOpen={isFilterOpen}
         onClose={() => setIsFilterOpen(false)}
-        title="Filtros"
+        title="Filtros avanzados"
       >
         <div className="flex flex-col gap-6">
-          {/* Type filter */}
-          <div>
-            <h3 className="text-b1-bold text-text-primary mb-3">Tipo</h3>
-            <div className="flex flex-wrap gap-2">
-              {(["plazo-fijo", "fci", "bono", "accion"] as ProductType[]).map(
-                (type) => (
-                  <FilterChip
-                    key={type}
-                    label={getProductTypeLabel(type)}
-                    isActive={filters.type === type}
-                    onClick={() =>
-                      setFilters((prev) => ({
-                        ...prev,
-                        type: prev.type === type ? null : type,
-                      }))
-                    }
-                  />
-                )
-              )}
-            </div>
-          </div>
-
           {/* Risk filter */}
           <div>
             <h3 className="text-b1-bold text-text-primary mb-3">Riesgo</h3>
