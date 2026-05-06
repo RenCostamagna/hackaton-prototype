@@ -115,7 +115,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
       {/* Bottom CTA */}
       <BottomBar>
         <Button size="lg" fullWidth onClick={handleInvest}>
-          Invertir {formatCurrency(investAmount, product.currency)}
+          Confirmar operacion
         </Button>
       </BottomBar>
     </div>
