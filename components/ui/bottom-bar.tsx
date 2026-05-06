@@ -10,9 +10,9 @@ export function BottomBar({ children, className }: BottomBarProps) {
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 right-0 bg-surface border-t border-border",
-        "px-4 py-3 pb-safe",
-        "max-w-md mx-auto",
+        "fixed bottom-20 left-0 right-0 bg-surface border-t border-border",
+        "px-4 py-3",
+        "max-w-md mx-auto z-40",
         className
       )}
     >
