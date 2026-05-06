@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import { BottomSheet } from "@/components/ui/bottom-sheet";
 import { Button } from "@/components/ui/button";
+import { BottomBar } from "@/components/ui/bottom-bar";
 import { CatalogHeader } from "@/components/features/catalog-header";
 import {
   formatPercentage,
@@ -12,7 +14,7 @@ import {
   getRiskLabel,
 } from "@/lib/utils";
 import type { Product, ProductType, RiskLevel, Currency } from "@/types";
-import { ChevronRight, X } from "lucide-react";
+import { ChevronRight, X, Check } from "lucide-react";
 import Link from "next/link";
 
 interface CatalogListProps {
@@ -26,7 +28,9 @@ type FilterState = {
 };
 
 export function CatalogList({ products }: CatalogListProps) {
+  const router = useRouter();
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
   const [filters, setFilters] = useState<FilterState>({
     type: "todos",
     risk: null,
@@ -48,6 +52,16 @@ export function CatalogList({ products }: CatalogListProps) {
   const clearFilters = () => {
     setFilters({ type: filters.type, risk: null, currency: null });
   };
+
+  const handleConfirmOperation = () => {
+    if (selectedProductId) {
+      router.push(`/invertir/resumen?productId=${selectedProductId}&amount=100000`);
+    }
+  };
+
+  const selectedProduct = selectedProductId 
+    ? products.find(p => p.id === selectedProductId) 
+    : null;
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -90,9 +104,16 @@ export function CatalogList({ products }: CatalogListProps) {
             </button>
           </Card>
         ) : (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 pb-24">
             {filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                isSelected={selectedProductId === product.id}
+                onSelect={() => setSelectedProductId(
+                  selectedProductId === product.id ? null : product.id
+                )}
+              />
             ))}
           </div>
         )}
@@ -150,40 +171,85 @@ export function CatalogList({ products }: CatalogListProps) {
           </Button>
         </div>
       </BottomSheet>
+
+      {/* Fixed CTA Bottom Bar */}
+      <BottomBar className="mb-20">
+        <div className="flex flex-col gap-2">
+          {selectedProduct && (
+            <p className="text-b2-regular text-text-muted text-center">
+              Seleccionado: <span className="text-text-primary font-semibold">{selectedProduct.name}</span>
+            </p>
+          )}
+          <Button 
+            fullWidth 
+            onClick={handleConfirmOperation}
+            disabled={!selectedProductId}
+          >
+            Confirmar operacion
+          </Button>
+        </div>
+      </BottomBar>
     </div>
   );
 }
 
-function ProductCard({ product }: { product: Product }) {
+interface ProductCardProps {
+  product: Product;
+  isSelected: boolean;
+  onSelect: () => void;
+}
+
+function ProductCard({ product, isSelected, onSelect }: ProductCardProps) {
   return (
-    <Link href={`/catalogo/${product.id}`}>
-      <Card className="p-4 flex items-center justify-between hover:shadow-lg transition-shadow">
-        <div className="flex-1">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-b1-bold text-text-primary">{product.name}</span>
-          </div>
-          <div className="flex items-center gap-2 mb-2">
-            <Pill variant="neutral">{getProductTypeLabel(product.type)}</Pill>
-            <Pill
-              variant={
-                product.risk === "bajo"
-                  ? "success"
-                  : product.risk === "moderado"
-                  ? "warning"
-                  : "danger"
-              }
-            >
-              {getRiskLabel(product.risk)}
-            </Pill>
-            <Pill variant="neutral">{product.currency}</Pill>
-          </div>
-          <p className="text-h3-bold text-success">
-            {formatPercentage(product.returnRate)} TNA
-          </p>
+    <Card 
+      className={`p-4 flex items-center gap-3 cursor-pointer transition-all ${
+        isSelected 
+          ? "ring-2 ring-primary bg-primary/5" 
+          : "hover:shadow-lg"
+      }`}
+      onClick={onSelect}
+    >
+      {/* Selection indicator */}
+      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+        isSelected 
+          ? "bg-primary border-primary" 
+          : "border-border"
+      }`}>
+        {isSelected && <Check className="w-4 h-4 text-white" />}
+      </div>
+      
+      <div className="flex-1">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-b1-bold text-text-primary">{product.name}</span>
         </div>
-        <ChevronRight className="w-5 h-5 text-text-muted" />
-      </Card>
-    </Link>
+        <div className="flex items-center gap-2 mb-2">
+          <Pill variant="neutral">{getProductTypeLabel(product.type)}</Pill>
+          <Pill
+            variant={
+              product.risk === "bajo"
+                ? "success"
+                : product.risk === "moderado"
+                ? "warning"
+                : "danger"
+            }
+          >
+            {getRiskLabel(product.risk)}
+          </Pill>
+          <Pill variant="neutral">{product.currency}</Pill>
+        </div>
+        <p className="text-h3-bold text-success">
+          {formatPercentage(product.returnRate)} TNA
+        </p>
+      </div>
+      
+      <Link 
+        href={`/catalogo/${product.id}`}
+        onClick={(e) => e.stopPropagation()}
+        className="text-primary"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </Link>
+    </Card>
   );
 }
 
