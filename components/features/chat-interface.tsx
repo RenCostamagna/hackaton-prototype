@@ -28,9 +28,9 @@ export function ChatInterface() {
   const currentChips = lastMessageWithChips?.chips || [];
 
   return (
-    <div className="flex flex-col h-screen bg-grey-1">
-      {/* Header - Fondo rojo con gradiente */}
-      <header className="bg-gradient-red px-4 pt-12 pb-4">
+    <div className="fixed inset-0 flex flex-col bg-grey-1 max-w-md mx-auto">
+      {/* Header fijo */}
+      <header className="flex-shrink-0 bg-gradient-red px-4 pt-12 pb-4">
         <div className="flex items-center gap-3">
           <Link 
             href="/dashboard" 
@@ -53,7 +53,7 @@ export function ChatInterface() {
         </div>
       </header>
 
-      {/* Messages */}
+      {/* Messages - area scrolleable */}
       <div className="flex-1 overflow-y-auto px-4 py-4">
         <div className="flex flex-col gap-4">
           {messages.map((message) => (
@@ -92,13 +92,15 @@ export function ChatInterface() {
         </div>
       </div>
 
-      {/* Input */}
-      <ChatInput
-        onSend={sendMessage}
-        onChipSelect={selectChip}
-        chips={currentChips}
-        disabled={isLoading}
-      />
+      {/* Input fijo arriba del bottom nav */}
+      <div className="flex-shrink-0 mb-20">
+        <ChatInput
+          onSend={sendMessage}
+          onChipSelect={selectChip}
+          chips={currentChips}
+          disabled={isLoading}
+        />
+      </div>
     </div>
   );
 }
