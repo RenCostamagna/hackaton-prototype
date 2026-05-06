@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { mockProducts, mockUser } from "@/lib/mock-data";
 import { Card } from "@/components/ui/card";
@@ -7,6 +8,7 @@ import { Pill } from "@/components/ui/pill";
 import { Button } from "@/components/ui/button";
 import { BottomBar } from "@/components/ui/bottom-bar";
 import { PageHeader } from "@/components/ui/page-header";
+import { LoadingScreen } from "@/components/ui/spinner";
 import {
   formatCurrency,
   formatPercentage,
@@ -20,6 +22,7 @@ import Link from "next/link";
 export function InvestmentSummary() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const productId = searchParams.get("productId");
   const amount = parseFloat(searchParams.get("amount") || "0");
@@ -47,13 +50,20 @@ export function InvestmentSummary() {
 
   const hasInsufficientFunds = amount > mockUser.availableBalance;
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (hasInsufficientFunds) {
       router.push("/invertir/error?type=insufficient-funds");
     } else {
+      setIsProcessing(true);
+      // Simular procesamiento de la operacion
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       router.push(`/invertir/exito?productId=${product.id}&amount=${amount}`);
     }
   };
+
+  if (isProcessing) {
+    return <LoadingScreen text="Procesando tu inversion..." />;
+  }
 
   return (
     <div className="flex flex-col pb-24">

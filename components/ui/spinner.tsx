@@ -21,10 +21,15 @@ export function Spinner({ size = "md", className }: SpinnerProps) {
   );
 }
 
-export function LoadingScreen() {
+interface LoadingScreenProps {
+  text?: string;
+}
+
+export function LoadingScreen({ text }: LoadingScreenProps) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background gap-4">
       <Spinner size="lg" />
+      {text && <p className="text-b1-regular text-text-muted">{text}</p>}
     </div>
   );
 }
