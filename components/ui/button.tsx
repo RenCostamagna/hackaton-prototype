@@ -26,13 +26,13 @@ export function Button({
         "focus:outline-none focus:ring-2 focus:ring-offset-2",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         {
-          "bg-primary text-text-inverse hover:bg-primary/90 focus:ring-primary":
+          "bg-primary text-white hover:bg-primary/90 focus:ring-primary":
             variant === "primary",
           "bg-surface border border-border text-text-primary hover:bg-surface-muted focus:ring-grey-3":
             variant === "secondary",
           "bg-transparent text-text-primary hover:bg-surface-muted focus:ring-grey-3":
             variant === "ghost",
-          "bg-danger text-text-inverse hover:bg-danger/90 focus:ring-danger":
+          "bg-danger text-white hover:bg-danger/90 focus:ring-danger":
             variant === "danger",
         },
         {
