@@ -54,8 +54,13 @@ export function ProductCardInline({ product }: ProductCardInlineProps) {
         </div>
       </div>
 
-      <p className="text-b2-regular text-text-muted mb-3 line-clamp-2">
+      <p className="text-b2-regular text-text-muted mb-2 line-clamp-2">
         {product.description}
+      </p>
+
+      {/* Disclaimer fijo - no generado por IA */}
+      <p className="text-b3-regular text-text-disabled mb-3 italic">
+        * Rendimiento estimado, no garantizado
       </p>
 
       <div className="flex items-center gap-2 text-b3-bold text-text-muted mb-4">
@@ -73,7 +78,7 @@ export function ProductCardInline({ product }: ProductCardInlineProps) {
           Ver detalle
         </Button>
         <Button size="sm" className="flex-1" onClick={handleInvest}>
-          Invertir ahora
+          Lo quiero
         </Button>
       </div>
     </Card>

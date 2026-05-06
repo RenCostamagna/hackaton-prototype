@@ -2,42 +2,33 @@
 
 import { cn } from "@/lib/utils";
 import { ProductCardInline } from "@/components/features/product-card-inline";
-import { OnboardingOptions } from "@/components/features/onboarding-options";
-import type { ChatMessage as ChatMessageType, Product, OnboardingQuestion } from "@/types";
+import type { ChatMessage as ChatMessageType, Product, ChipOption } from "@/types";
 
 interface ChatMessageProps {
   message: ChatMessageType;
   product?: Product;
-  onboardingQuestion?: OnboardingQuestion;
-  onAnswerOnboarding?: (questionId: string, value: string) => void;
+  onSelectChip?: (value: string) => void;
+  isLastWithChips?: boolean;
 }
 
 export function ChatMessage({
   message,
   product,
-  onboardingQuestion,
-  onAnswerOnboarding,
+  onSelectChip,
+  isLastWithChips,
 }: ChatMessageProps) {
   const isUser = message.role === "user";
 
+  // Renderizar tarjeta de producto
   if (message.contentType === "product-card" && product) {
     return (
-      <div className="max-w-[85%]">
+      <div className="max-w-[90%] self-start">
         <ProductCardInline product={product} />
-      </div>
-    );
-  }
-
-  if (message.contentType === "onboarding-question" && onboardingQuestion) {
-    return (
-      <div className="max-w-[85%]">
-        <div className="bg-surface-muted rounded-2xl rounded-tl-none px-4 py-3 mb-2">
-          <p className="text-b1-regular text-text-primary">{message.content}</p>
-        </div>
-        <OnboardingOptions
-          question={onboardingQuestion}
-          onSelect={(value) => onAnswerOnboarding?.(onboardingQuestion.id, value)}
-        />
+        {message.content && (
+          <p className="text-b2-regular text-text-muted mt-2 px-1">
+            {message.content}
+          </p>
+        )}
       </div>
     );
   }
@@ -49,6 +40,7 @@ export function ChatMessage({
         isUser ? "self-end" : "self-start"
       )}
     >
+      {/* Bubble del mensaje */}
       <div
         className={cn(
           "rounded-2xl px-4 py-3",
@@ -57,8 +49,23 @@ export function ChatMessage({
             : "bg-surface-muted text-text-primary rounded-tl-none"
         )}
       >
-        <p className="text-b1-regular">{message.content}</p>
+        <p className="text-b1-regular whitespace-pre-line">{message.content}</p>
       </div>
+
+      {/* Chips - solo mostrar en el ultimo mensaje que los tiene */}
+      {isLastWithChips && message.chips && message.chips.length > 0 && (
+        <div className="flex flex-wrap gap-2 mt-3">
+          {message.chips.map((chip: ChipOption) => (
+            <button
+              key={chip.id}
+              onClick={() => onSelectChip?.(chip.value)}
+              className="px-4 py-2 rounded-full bg-surface border border-border text-text-secondary text-b2-semibold hover:bg-surface-muted hover:border-primary hover:text-primary transition-all active:scale-95"
+            >
+              {chip.label}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

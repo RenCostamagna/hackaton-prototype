@@ -53,9 +53,30 @@ export interface User {
   investorProfile: InvestorProfile;
 }
 
-// Chat types
+// AIKO Chat types
 export type MessageRole = "user" | "assistant";
-export type MessageContentType = "text" | "product-card" | "onboarding-question";
+export type MessageContentType = 
+  | "text" 
+  | "product-card" 
+  | "onboarding-question"
+  | "chips"
+  | "profile-selection"
+  | "profile-confirmation";
+
+export type AikoFlowState = 
+  | "welcome"
+  | "awaiting-path-selection"
+  | "self-declare-profile"
+  | "ask-refine-questions"
+  | "onboarding-risk"
+  | "onboarding-horizon"
+  | "onboarding-objective"
+  | "profile-inferred"
+  | "profile-contradiction"
+  | "show-suggestions"
+  | "conversation"
+  | "explain-aiko"
+  | "catalog-redirect";
 
 export interface ChatMessage {
   id: string;
@@ -63,7 +84,14 @@ export interface ChatMessage {
   content: string;
   contentType: MessageContentType;
   productId?: string;
+  chips?: ChipOption[];
   timestamp: string;
+}
+
+export interface ChipOption {
+  id: string;
+  label: string;
+  value: string;
 }
 
 export interface OnboardingQuestion {
@@ -74,6 +102,16 @@ export interface OnboardingQuestion {
     label: string;
   }[];
   field: keyof InvestorProfile;
+}
+
+// AIKO Profile tracking
+export interface AikoProfileState {
+  declaredProfile: RiskProfile | null;
+  inferredProfile: RiskProfile | null;
+  riskAnswer: string | null;
+  horizonAnswer: string | null;
+  objectiveAnswer: string | null;
+  finalProfile: RiskProfile | null;
 }
 
 // Error types
