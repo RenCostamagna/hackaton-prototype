@@ -35,8 +35,7 @@ export function Button({
           "bg-danger hover:bg-danger/90 focus:ring-danger":
             variant === "danger",
         },
-        variant === "primary" && "text-[#fcf5f5]",
-        variant === "danger" && "text-[#fcf5f5]",
+        (variant === "primary" || variant === "danger") && "!text-white",
         {
           "px-3 py-2 text-b2-semibold min-h-[36px]": size === "sm",
           "px-4 py-3 text-b1-bold min-h-[44px]": size === "md",
