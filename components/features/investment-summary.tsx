@@ -51,7 +51,7 @@ export function InvestmentSummary() {
     if (hasInsufficientFunds) {
       router.push("/invertir/error?type=insufficient-funds");
     } else {
-      router.push(`/invertir/pin?productId=${product.id}&amount=${amount}`);
+      router.push(`/invertir/exito?productId=${product.id}&amount=${amount}`);
     }
   };
 
