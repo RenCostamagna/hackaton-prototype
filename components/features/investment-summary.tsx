@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import { Button } from "@/components/ui/button";
 import { BottomBar } from "@/components/ui/bottom-bar";
+import { PageHeader } from "@/components/ui/page-header";
 import {
   formatCurrency,
   formatPercentage,
@@ -13,7 +14,7 @@ import {
   getRiskLabel,
   calculateProjectedReturn,
 } from "@/lib/utils";
-import { ArrowLeft, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import Link from "next/link";
 
 export function InvestmentSummary() {
@@ -30,13 +31,13 @@ export function InvestmentSummary() {
       <div className="p-4 text-center">
         <p className="text-b1-regular text-text-muted">Producto no encontrado</p>
         <Link href="/catalogo" className="text-b1-bold text-primary mt-2 block">
-          Volver al catálogo
+          Volver al catalogo
         </Link>
       </div>
     );
   }
 
-  const commission = amount * 0.005; // 0.5% commission mock
+  const commission = amount * 0.005;
   const projectedReturn = calculateProjectedReturn(
     amount,
     product.returnRate,
@@ -56,21 +57,9 @@ export function InvestmentSummary() {
 
   return (
     <div className="flex flex-col pb-24">
-      {/* Header */}
-      <header className="px-4 pt-12 pb-4 bg-background">
-        <div className="flex items-center gap-3">
-          <Link
-            href={`/catalogo/${product.id}`}
-            className="w-10 h-10 rounded-full bg-surface-muted flex items-center justify-center"
-            aria-label="Volver"
-          >
-            <ArrowLeft className="w-5 h-5 text-text-primary" />
-          </Link>
-          <h1 className="text-h2-bold text-text-primary">Resumen de inversión</h1>
-        </div>
-      </header>
+      <PageHeader title="Resumen de inversion" backHref={`/catalogo/${product.id}`} />
 
-      <div className="px-4 flex flex-col gap-4">
+      <div className="px-4 py-4 flex flex-col gap-4">
         {/* Product info */}
         <Card className="p-4">
           <div className="flex items-start justify-between mb-3">
@@ -99,7 +88,7 @@ export function InvestmentSummary() {
 
         {/* Amount details */}
         <Card className="p-4">
-          <h3 className="text-b1-bold text-text-primary mb-4">Detalle de la operación</h3>
+          <h3 className="text-b1-bold text-text-primary mb-4">Detalle de la operacion</h3>
 
           <div className="flex flex-col gap-3">
             <div className="flex justify-between">
@@ -110,7 +99,7 @@ export function InvestmentSummary() {
             </div>
 
             <div className="flex justify-between">
-              <span className="text-b1-regular text-text-muted">Comisión (0.5%)</span>
+              <span className="text-b1-regular text-text-muted">Comision (0.5%)</span>
               <span className="text-b1-regular text-text-secondary">
                 -{formatCurrency(commission, product.currency)}
               </span>
@@ -120,7 +109,7 @@ export function InvestmentSummary() {
               <div className="flex justify-between">
                 <span className="text-b1-regular text-text-muted">Plazo</span>
                 <span className="text-b1-regular text-text-secondary">
-                  {product.term} días
+                  {product.term} dias
                 </span>
               </div>
             )}
@@ -164,7 +153,7 @@ export function InvestmentSummary() {
             <div className="flex items-center gap-2 mt-3 p-3 bg-danger-bg rounded-lg">
               <AlertCircle className="w-4 h-4 text-danger flex-shrink-0" />
               <span className="text-b2-regular text-danger">
-                No tenés saldo suficiente para esta operación
+                No tenes saldo suficiente para esta operacion
               </span>
             </div>
           )}
@@ -179,7 +168,7 @@ export function InvestmentSummary() {
           onClick={handleConfirm}
           disabled={hasInsufficientFunds}
         >
-          Confirmar inversión
+          Confirmar inversion
         </Button>
       </BottomBar>
     </div>
