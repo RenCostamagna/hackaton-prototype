@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { Pill } from "@/components/ui/pill";
 import { Button } from "@/components/ui/button";
 import { BottomBar } from "@/components/ui/bottom-bar";
+import { PageHeader } from "@/components/ui/page-header";
 import {
   formatCurrency,
   formatDate,
@@ -12,8 +13,7 @@ import {
   getRiskLabel,
 } from "@/lib/utils";
 import type { Investment, OperationStatus } from "@/types";
-import { ArrowLeft, TrendingUp, Calendar, FileText, Copy } from "lucide-react";
-import Link from "next/link";
+import { TrendingUp, Calendar, FileText, Copy } from "lucide-react";
 
 interface InvestmentDetailViewProps {
   investment: Investment;
@@ -35,7 +35,6 @@ export function InvestmentDetailView({ investment }: InvestmentDetailViewProps) 
   const returnPercentage =
     (investment.currentReturn / investment.amount) * 100;
 
-  // Show early redemption button only for cancelable products that are active
   const showRedemption =
     product.isCancelable && investment.status === "activa";
 
@@ -45,29 +44,17 @@ export function InvestmentDetailView({ investment }: InvestmentDetailViewProps) 
 
   return (
     <div className="flex flex-col pb-24">
-      {/* Header */}
-      <header className="px-4 pt-12 pb-4 bg-background">
-        <div className="flex items-center gap-3">
-          <Link
-            href="/historial"
-            className="w-10 h-10 rounded-full bg-surface-muted flex items-center justify-center"
-            aria-label="Volver"
-          >
-            <ArrowLeft className="w-5 h-5 text-text-primary" />
-          </Link>
-          <div className="flex-1">
-            <h1 className="text-h2-bold text-text-primary">{product.name}</h1>
-            <div className="flex items-center gap-2 mt-1">
-              <Pill variant="neutral">{getProductTypeLabel(product.type)}</Pill>
-              <Pill variant={statusConfig[investment.status].variant}>
-                {statusConfig[investment.status].label}
-              </Pill>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PageHeader title={product.name} backHref="/historial" />
 
-      <div className="px-4 flex flex-col gap-4">
+      <div className="px-4 py-4 flex flex-col gap-4">
+        {/* Pills */}
+        <div className="flex items-center gap-2">
+          <Pill variant="neutral">{getProductTypeLabel(product.type)}</Pill>
+          <Pill variant={statusConfig[investment.status].variant}>
+            {statusConfig[investment.status].label}
+          </Pill>
+        </div>
+
         {/* Current value card */}
         <Card className="p-5 bg-gradient-red text-text-inverse">
           <div className="flex items-center gap-2 mb-2">
@@ -89,20 +76,20 @@ export function InvestmentDetailView({ investment }: InvestmentDetailViewProps) 
         {/* Operation details */}
         <Card className="p-4">
           <h2 className="text-h3-semibold text-text-primary mb-4">
-            Detalle de la operación
+            Detalle de la operacion
           </h2>
 
           <div className="flex flex-col gap-3">
             <DetailRow
               icon={<FileText className="w-4 h-4" />}
-              label="N° de operación"
+              label="N de operacion"
               value={
                 <div className="flex items-center gap-2">
                   <span className="font-mono">{investment.operationNumber}</span>
                   <button
                     onClick={handleCopyOperationNumber}
                     className="p-1 hover:bg-surface-muted rounded"
-                    aria-label="Copiar número de operación"
+                    aria-label="Copiar numero de operacion"
                   >
                     <Copy className="w-4 h-4 text-text-muted" />
                   </button>
@@ -112,7 +99,7 @@ export function InvestmentDetailView({ investment }: InvestmentDetailViewProps) 
 
             <DetailRow
               icon={<Calendar className="w-4 h-4" />}
-              label="Fecha de inversión"
+              label="Fecha de inversion"
               value={formatDate(investment.investedAt)}
             />
 
@@ -156,7 +143,7 @@ export function InvestmentDetailView({ investment }: InvestmentDetailViewProps) 
         {/* Product info */}
         <Card className="p-4">
           <h2 className="text-h3-semibold text-text-primary mb-4">
-            Información del producto
+            Informacion del producto
           </h2>
 
           <div className="flex flex-col gap-3">
@@ -193,7 +180,7 @@ export function InvestmentDetailView({ investment }: InvestmentDetailViewProps) 
               <div className="flex justify-between">
                 <span className="text-b1-regular text-text-muted">Plazo</span>
                 <span className="text-b1-regular text-text-secondary">
-                  {product.term} días
+                  {product.term} dias
                 </span>
               </div>
             )}
@@ -213,10 +200,10 @@ export function InvestmentDetailView({ investment }: InvestmentDetailViewProps) 
       {showRedemption && (
         <BottomBar className="flex flex-col gap-2">
           <Button size="lg" fullWidth variant="danger">
-            Rescatar inversión
+            Rescatar inversion
           </Button>
           <p className="text-b3-bold text-text-muted text-center">
-            El rescate se acreditará en 24-48hs
+            El rescate se acreditara en 24-48hs
           </p>
         </BottomBar>
       )}

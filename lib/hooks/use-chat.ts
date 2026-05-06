@@ -49,12 +49,12 @@ const CHIPS = {
   afterExplain: [
     { id: "know-profile", label: "Ya se mi perfil inversor", value: "ya-se-mi-perfil" },
     { id: "discover-profile", label: "Ayudame a descubrirlo", value: "ayudame-a-descubrirlo" },
-    { id: "explore-catalog", label: "Ver el catalogo", value: "explorar-catalogo" },
+    { id: "explore-catalog", label: "Ver Inversiones", value: "explorar-catalogo" },
   ],
   afterSuggestions: [
     { id: "see-more", label: "Ver mas opciones", value: "ver-mas" },
     { id: "change-profile", label: "Cambiar perfil", value: "cambiar-perfil" },
-    { id: "explore-catalog", label: "Ver catalogo completo", value: "explorar-catalogo" },
+    { id: "explore-catalog", label: "Ver todas las Inversiones", value: "explorar-catalogo" },
   ],
 } as const;
 

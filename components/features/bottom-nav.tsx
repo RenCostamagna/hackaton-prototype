@@ -1,14 +1,14 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Home, LayoutGrid, MessageCircle, History } from "lucide-react";
+import { Home, LayoutGrid, Bot, History } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
   { href: "/dashboard", label: "Inicio", icon: Home },
-  { href: "/catalogo", label: "Catálogo", icon: LayoutGrid },
-  { href: "/chatbot", label: "Chatbot", icon: MessageCircle },
+  { href: "/catalogo", label: "Inversiones", icon: LayoutGrid },
+  { href: "/chatbot", label: "AIKO", icon: Bot },
   { href: "/historial", label: "Historial", icon: History },
 ];
 
