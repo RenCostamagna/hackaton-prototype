@@ -1,17 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Card } from "@/components/ui/card";
-import { Pill } from "@/components/ui/pill";
 import { Button } from "@/components/ui/button";
-import {
-  formatPercentage,
-  formatCurrency,
-  getProductTypeLabel,
-  getRiskLabel,
-} from "@/lib/utils";
+import { formatCurrency, getRiskLabel } from "@/lib/utils";
 import type { Product } from "@/types";
-import { TrendingUp } from "lucide-react";
 
 interface ProductCardInlineProps {
   product: Product;
@@ -20,67 +12,39 @@ interface ProductCardInlineProps {
 export function ProductCardInline({ product }: ProductCardInlineProps) {
   const router = useRouter();
 
-  const handleInvest = () => {
-    router.push(`/invertir/resumen?productId=${product.id}&amount=${product.minAmount}`);
-  };
-
-  const handleViewDetail = () => {
+  const handleViewProduct = () => {
     router.push(`/catalogo/${product.id}`);
   };
 
+  // Formatear la tasa de retorno
+  const formatRate = () => {
+    if (product.type === "plazo-fijo") {
+      return `TNA ${(product.returnRate * 100).toFixed(0)}%`;
+    }
+    return `+${(product.returnRate * 100).toFixed(0)}% anual`;
+  };
+
   return (
-    <Card className="p-4 border border-border">
-      <div className="flex items-start justify-between mb-3">
-        <div>
-          <h3 className="text-b1-bold text-text-primary mb-1">{product.name}</h3>
-          <div className="flex items-center gap-2">
-            <Pill variant="neutral">{getProductTypeLabel(product.type)}</Pill>
-            <Pill
-              variant={
-                product.risk === "bajo"
-                  ? "success"
-                  : product.risk === "moderado"
-                  ? "warning"
-                  : "danger"
-              }
-            >
-              {getRiskLabel(product.risk)}
-            </Pill>
-          </div>
-        </div>
-        <div className="flex items-center gap-1 text-success">
-          <TrendingUp className="w-4 h-4" />
-          <span className="text-b1-bold">{formatPercentage(product.returnRate)}</span>
-        </div>
+    <div className="bg-white rounded-xl p-4 shadow-card border border-grey-2">
+      {/* Header con nombre y tasa */}
+      <div className="flex items-start justify-between mb-1">
+        <h3 className="text-b1-bold text-text-primary">{product.name}</h3>
+        <span className="text-primary text-b1-bold">{formatRate()}</span>
       </div>
 
-      <p className="text-b2-regular text-text-muted mb-2 line-clamp-2">
-        {product.description}
+      {/* Info secundaria */}
+      <p className="text-b2-regular text-grey-5 mb-4">
+        {getRiskLabel(product.risk)} {" \u2022 "} Desde {formatCurrency(product.minAmount, product.currency)}
       </p>
 
-      {/* Disclaimer fijo - no generado por IA */}
-      <p className="text-b3-regular text-text-disabled mb-3 italic">
-        * Rendimiento estimado, no garantizado
-      </p>
-
-      <div className="flex items-center gap-2 text-b3-bold text-text-muted mb-4">
-        <span>Mínimo: {formatCurrency(product.minAmount, product.currency)}</span>
-        {product.term && <span>| {product.term} días</span>}
-      </div>
-
-      <div className="flex gap-2">
-        <Button
-          size="sm"
-          variant="secondary"
-          className="flex-1"
-          onClick={handleViewDetail}
-        >
-          Ver detalle
-        </Button>
-        <Button size="sm" className="flex-1" onClick={handleInvest}>
-          Lo quiero
-        </Button>
-      </div>
-    </Card>
+      {/* Boton de accion */}
+      <Button 
+        onClick={handleViewProduct}
+        className="w-full"
+        size="md"
+      >
+        Ver producto
+      </Button>
+    </div>
   );
 }

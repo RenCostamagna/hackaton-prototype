@@ -84,6 +84,7 @@ export interface ChatMessage {
   content: string;
   contentType: MessageContentType;
   productId?: string;
+  productIds?: string[];
   chips?: ChipOption[];
   timestamp: string;
 }

@@ -16,10 +16,9 @@ interface UseChatReturn {
 // AIKO Chips por momento
 const CHIPS = {
   welcome: [
-    { id: "know-profile", label: "Ya se mi perfil inversor", value: "ya-se-mi-perfil" },
-    { id: "discover-profile", label: "Ayudame a descubrirlo", value: "ayudame-a-descubrirlo" },
-    { id: "explore-catalog", label: "Prefiero explorar el catalogo", value: "explorar-catalogo" },
-    { id: "what-is-aiko", label: "Que es AIKO?", value: "que-es-aiko" },
+    { id: "ver-inversiones", label: "Ver mis inversiones", value: "ver-inversiones" },
+    { id: "quiero-invertir", label: "Quiero invertir", value: "quiero-invertir" },
+    { id: "como-empiezo", label: "Como empiezo?", value: "como-empiezo" },
   ],
   profileSelection: [
     { id: "conservador", label: "Conservador — prefiero no arriesgar", value: "conservador" },
@@ -60,13 +59,7 @@ const CHIPS = {
 } as const;
 
 // Mensaje de bienvenida con disclaimer
-const WELCOME_MESSAGE = `¡Hola! Soy AIKO, el asistente de inversiones del banco.
-
-Puedo ayudarte a encontrar opciones que se adapten a lo que buscas, segun tu perfil y objetivos.
-
-Antes de arrancar, una aclaracion importante: todo lo que te comparto son sugerencias orientativas. No son asesoramiento financiero formal, y tanto AIKO como el banco no nos hacemos responsables por los resultados de las inversiones que decidas hacer. La decision final siempre es tuya.
-
-¿Como preferis arrancar?`;
+const WELCOME_MESSAGE = `Hola! Soy tu asistente de inversiones. Puedo ayudarte a encontrar el producto perfecto para vos, realizar operaciones y responder tus consultas. En que puedo ayudarte hoy?`;
 
 const EXPLAIN_AIKO = `Soy el asistente de inversiones del banco. Puedo ayudarte a entender que productos tenes disponibles, explicarte como funciona cada uno y sugerirte opciones segun tus objetivos y tolerancia al riesgo.
 
@@ -165,29 +158,14 @@ export function useChat(): UseChatReturn {
       agresivo: "agresivo",
     };
 
+    const products = getProductsForProfile(profile).slice(0, 2);
+
+    // Mensaje con productos incluidos
     addMessage({
       role: "assistant",
-      content: `Fijate que tengo algunas opciones que podrian ir bien para un perfil ${profileLabels[profile]}. Recorda que son sugerencias orientativas — los rendimientos son estimados y pueden variar segun el mercado.`,
-      contentType: "text",
-    });
-
-    await new Promise((resolve) => setTimeout(resolve, 300));
-
-    const products = getProductsForProfile(profile);
-    for (const product of products.slice(0, 3)) {
-      addMessage({
-        role: "assistant",
-        content: getProductDescription(product.type),
-        contentType: "product-card",
-        productId: product.id,
-      });
-      await new Promise((resolve) => setTimeout(resolve, 200));
-    }
-
-    addMessage({
-      role: "assistant",
-      content: "¿Queres ver mas opciones o explorar el catalogo completo?",
-      contentType: "text",
+      content: `Entiendo que queres invertir. Te recomiendo estos productos segun tu perfil:`,
+      contentType: "product-card",
+      productIds: products.map(p => p.id),
       chips: CHIPS.afterSuggestions as unknown as ChipOption[],
     });
 
@@ -210,10 +188,13 @@ export function useChat(): UseChatReturn {
   const selectChip = useCallback(async (chipValue: string) => {
     // Agregar respuesta del usuario
     const chipLabels: Record<string, string> = {
+      "ver-inversiones": "Ver mis inversiones",
+      "quiero-invertir": "Quiero invertir",
+      "como-empiezo": "Como empiezo?",
       "ya-se-mi-perfil": "Ya se mi perfil inversor",
       "ayudame-a-descubrirlo": "Ayudame a descubrirlo",
       "explorar-catalogo": "Prefiero explorar el catalogo",
-      "que-es-aiko": "¿Que es AIKO?",
+      "que-es-aiko": "Que es AIKO?",
       "conservador": "Conservador",
       "moderado": "Moderado",
       "agresivo": "Agresivo",
@@ -285,10 +266,38 @@ export function useChat(): UseChatReturn {
 
   const handlePathSelection = useCallback((value: string) => {
     switch (value) {
+      case "ver-inversiones":
+        addMessage({
+          role: "assistant",
+          content: "Te muestro tus inversiones activas. Podes ver el detalle de cada una tocando en la tarjeta.",
+          contentType: "text",
+        });
+        setFlowState("conversation");
+        // En implementacion real, redirigir a historial
+        break;
+      
+      case "quiero-invertir":
+        // Usar perfil precargado moderado y mostrar sugerencias
+        setProfileState(prev => ({ ...prev, finalProfile: "moderado" }));
+        showSuggestions("moderado");
+        break;
+      
+      case "como-empiezo":
+        addMessage({
+          role: "assistant",
+          content: `Para empezar a invertir, primero necesito conocerte un poco mejor. Vamos a definir tu perfil inversor con unas preguntas rapidas.
+
+Primera pregunta: cuando invertis, como te sentis mas comodo?`,
+          contentType: "text",
+          chips: CHIPS.riskTolerance as unknown as ChipOption[],
+        });
+        setFlowState("onboarding-risk");
+        break;
+      
       case "ya-se-mi-perfil":
         addMessage({
           role: "assistant",
-          content: "¿Con cual de estos perfiles te identificas?",
+          content: "Con cual de estos perfiles te identificas?",
           contentType: "text",
           chips: CHIPS.profileSelection as unknown as ChipOption[],
         });
@@ -298,7 +307,7 @@ export function useChat(): UseChatReturn {
       case "ayudame-a-descubrirlo":
         addMessage({
           role: "assistant",
-          content: "Primera pregunta: cuando invertis, ¿como te sentis mas comodo?",
+          content: "Primera pregunta: cuando invertis, como te sentis mas comodo?",
           contentType: "text",
           chips: CHIPS.riskTolerance as unknown as ChipOption[],
         });
@@ -312,7 +321,6 @@ export function useChat(): UseChatReturn {
           contentType: "text",
         });
         setFlowState("catalog-redirect");
-        // En una implementacion real, redirigir al catalogo
         break;
       
       case "que-es-aiko":
@@ -325,7 +333,7 @@ export function useChat(): UseChatReturn {
         setFlowState("explain-aiko");
         break;
     }
-  }, [addMessage]);
+  }, [addMessage, showSuggestions]);
 
   const handleSelfDeclare = useCallback((profile: RiskProfile) => {
     setProfileState(prev => ({ ...prev, declaredProfile: profile }));
