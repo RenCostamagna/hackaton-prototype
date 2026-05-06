@@ -24,15 +24,16 @@ export function Button({
       className={cn(
         "inline-flex items-center justify-center rounded-lg font-semibold transition-all",
         "focus:outline-none focus:ring-2 focus:ring-offset-2",
+        "active:scale-95 active:opacity-90",
         "disabled:opacity-50 disabled:cursor-not-allowed",
         {
-          "bg-primary hover:bg-primary/90 focus:ring-primary":
+          "bg-primary hover:bg-primary/90 focus:ring-primary active:bg-primary/80":
             variant === "primary",
-          "bg-surface border border-border text-text-primary hover:bg-surface-muted focus:ring-grey-3":
+          "bg-surface border border-border text-text-primary hover:bg-surface-muted focus:ring-grey-3 active:bg-grey-2":
             variant === "secondary",
-          "bg-transparent text-text-primary hover:bg-surface-muted focus:ring-grey-3":
+          "bg-transparent text-text-primary hover:bg-surface-muted focus:ring-grey-3 active:bg-grey-2":
             variant === "ghost",
-          "bg-danger hover:bg-danger/90 focus:ring-danger":
+          "bg-danger hover:bg-danger/90 focus:ring-danger active:bg-danger/80":
             variant === "danger",
         },
         (variant === "primary" || variant === "danger") && "!text-white",
