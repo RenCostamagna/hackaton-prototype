@@ -31,7 +31,7 @@ export function InvestmentSummary() {
       <div className="p-4 text-center">
         <p className="text-b1-regular text-text-muted">Producto no encontrado</p>
         <Link href="/catalogo" className="text-b1-bold text-primary mt-2 block">
-          Volver al catalogo
+          Volver a Inversiones
         </Link>
       </div>
     );

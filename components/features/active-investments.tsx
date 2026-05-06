@@ -21,13 +21,13 @@ export function ActiveInvestments({ investments }: ActiveInvestmentsProps) {
         <h2 className="text-h3-semibold text-text-primary">Mis inversiones</h2>
         <Card className="p-6 text-center">
           <p className="text-b1-regular text-text-muted">
-            Aún no tenés inversiones activas
+            Aun no tenes inversiones activas
           </p>
           <Link
             href="/catalogo"
             className="text-b1-bold text-primary mt-2 inline-block"
           >
-            Explorá el catálogo
+            Explora Inversiones
           </Link>
         </Card>
       </div>

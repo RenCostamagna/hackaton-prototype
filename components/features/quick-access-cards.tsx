@@ -1,20 +1,20 @@
 import { Card } from "@/components/ui/card";
-import { LayoutGrid, MessageCircle, ChevronRight } from "lucide-react";
+import { LayoutGrid, Bot, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 const quickAccessItems = [
   {
     href: "/catalogo",
     icon: LayoutGrid,
-    title: "Catálogo",
-    description: "Explorá productos de inversión",
+    title: "Inversiones",
+    description: "Explora productos de inversion",
     color: "bg-primary/10 text-primary",
   },
   {
     href: "/chatbot",
-    icon: MessageCircle,
-    title: "Chatbot",
-    description: "Invertí con asistencia",
+    icon: Bot,
+    title: "AIKO",
+    description: "Inverti con asistencia",
     color: "bg-success/10 text-success",
   },
 ];

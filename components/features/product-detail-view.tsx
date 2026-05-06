@@ -31,7 +31,7 @@ export function ProductDetailView({ product }: ProductDetailViewProps) {
 
   return (
     <div className="flex flex-col pb-24">
-      <PageHeader title={product.name} backHref="/catalogo" />
+      <PageHeader title={product.name} backHref="/catalogo" backLabel="Inversiones" />
 
       <div className="px-4 py-4 flex flex-col gap-4">
         {/* Pills */}

@@ -37,7 +37,7 @@ export function CatalogHeader({
           <ArrowLeft className="w-6 h-6" />
         </button>
         
-        <h1 className="text-h3-bold text-white">Catalogo de inversiones</h1>
+        <h1 className="text-h3-bold text-white">Inversiones</h1>
         
         <button
           onClick={onOpenFilters}

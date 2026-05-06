@@ -29,13 +29,13 @@ export function HistoryList({ investments }: HistoryListProps) {
       <div className="px-4">
         <Card className="p-6 text-center">
           <p className="text-b1-regular text-text-muted">
-            Aún no tenés operaciones registradas
+            Aun no tenes operaciones registradas
           </p>
           <Link
             href="/catalogo"
             className="text-b1-bold text-primary mt-2 inline-block"
           >
-            Explorá el catálogo
+            Explora Inversiones
           </Link>
         </Card>
       </div>
