@@ -13,7 +13,7 @@ interface PageHeaderProps {
 export function PageHeader({ title, backHref, rightAction, children }: PageHeaderProps) {
   return (
     <header className="bg-gradient-red text-text-inverse sticky top-0 z-10">
-      <div className="px-4 pt-12 pb-4">
+      <div className="px-4 pt-8 pb-4">
         <div className="flex items-center justify-between">
           {backHref ? (
             <Link

@@ -30,7 +30,7 @@ export function ChatInterface() {
   return (
     <div className="fixed inset-0 flex flex-col bg-grey-1 max-w-md mx-auto">
       {/* Header fijo */}
-      <header className="flex-shrink-0 bg-gradient-red px-4 pt-12 pb-4">
+      <header className="flex-shrink-0 bg-gradient-red px-4 pt-8 pb-4">
         <div className="flex items-center gap-3">
           <Link 
             href="/dashboard" 

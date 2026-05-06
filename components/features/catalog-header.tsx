@@ -26,7 +26,7 @@ export function CatalogHeader({
   const router = useRouter();
 
   return (
-    <header className="bg-gradient-to-r from-[#E31C19] to-[#B71518] pt-12 pb-4">
+    <header className="bg-gradient-to-r from-[#E31C19] to-[#B71518] pt-8 pb-4">
       {/* Top row */}
       <div className="flex items-center justify-between px-4 mb-4">
         <button
