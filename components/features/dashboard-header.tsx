@@ -9,7 +9,7 @@ interface DashboardHeaderProps {
 
 export function DashboardHeader({ user }: DashboardHeaderProps) {
   return (
-    <header className="bg-gradient-red px-4 pt-12 pb-6 text-text-inverse sticky top-0 z-10">
+    <header className="bg-gradient-red px-4 pt-12 pb-10 text-text-inverse">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-b2-regular opacity-90">Hola,</p>
