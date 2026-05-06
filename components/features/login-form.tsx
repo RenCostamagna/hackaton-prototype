@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 
 export function LoginForm() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [usuario, setUsuario] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -21,7 +21,7 @@ export function LoginForm() {
     await new Promise((resolve) => setTimeout(resolve, 800));
 
     // Validación mock
-    if (email && password) {
+    if (usuario && password) {
       router.push("/dashboard");
     } else {
       setError("Por favor, completá todos los campos");
@@ -32,12 +32,12 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
       <Input
-        label="Email"
-        type="email"
-        placeholder="tu@email.com"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        autoComplete="email"
+        label="Usuario"
+        type="text"
+        placeholder="Tu usuario"
+        value={usuario}
+        onChange={(e) => setUsuario(e.target.value)}
+        autoComplete="username"
         required
       />
 
